@@ -1,0 +1,157 @@
+---
+import { profile } from '../data/profile';
+
+// Persona 5 style menu
+const menu = [
+  { href: '#codex', label: 'Codex' },
+  { href: '#missions', label: 'Missions' },
+  { href: '#side-quests', label: 'Side Quests' },
+  { href: '#stats', label: 'Stats' },
+  { href: '#confidants', label: 'Confidants' },
+  { href: '#contact', label: 'Calling Card' },
+];
+
+// Ransom-note style letters for the first name
+const first = profile.name.split(' ')[0].toUpperCase().split('');
+const last = profile.name.split(' ').slice(1).join(' ').toUpperCase();
+---
+
+<header class="hero">
+  <div class="slash" aria-hidden="true"></div>
+  <div class="burst" aria-hidden="true"></div>
+
+  <div class="wrap grid">
+    <div class="name">
+      <p class="me-label">Profile loaded</p>
+      <h1>
+        <span class="ransom">
+          {first.map((c, i) => <span class={`l l${i % 4}`}>{c}</span>)}
+        </span>
+        <span class="last">{last}</span>
+      </h1>
+      <p class="tag">{profile.tagline}</p>
+      <p class="loc">{profile.location}</p>
+    </div>
+
+    <nav aria-label="Main menu">
+      <ul>
+        {menu.map((m, i) => (
+          <li style={`--i:${i}`}>
+            <a href={m.href}>{m.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 4rem 1.5rem;
+    overflow: hidden;
+  }
+
+  /* Big red slash across the screen */
+  .slash {
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: 58%;
+    height: 140%;
+    background: var(--p-red);
+    transform: skewX(-18deg);
+    transform-origin: top right;
+  }
+  .burst {
+    position: absolute;
+    right: 8%;
+    top: 12%;
+    width: 340px;
+    height: 340px;
+    background: var(--p-black);
+    clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    opacity: 0.35;
+    animation: rotate 30s linear infinite;
+  }
+
+  .grid {
+    position: relative;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  h1 { margin: 1rem 0; line-height: 0.9; }
+
+  .ransom { display: flex; gap: 0.2rem; flex-wrap: wrap; }
+  .l {
+    font-family: var(--font-p);
+    font-size: clamp(4rem, 13vw, 9rem);
+    padding: 0 0.15em;
+    display: inline-block;
+  }
+  .l0 { background: var(--p-white); color: var(--p-black); transform: rotate(-6deg); }
+  .l1 { background: var(--p-black); color: var(--p-white); transform: rotate(4deg) translateY(8px); border: 3px solid var(--p-white); }
+  .l2 { background: var(--p-red); color: var(--p-white); transform: rotate(-2deg) translateY(-6px); border: 3px solid var(--p-black); }
+  .l3 { background: var(--p-white); color: var(--p-red); transform: rotate(7deg); }
+
+  .last {
+    display: block;
+    font-family: var(--font-me);
+    font-weight: 700;
+    letter-spacing: 0.6em;
+    font-size: clamp(1.5rem, 4vw, 2.6rem);
+    margin-top: 1rem;
+    color: var(--holo);
+    text-shadow: 0 0 18px var(--holo-glow);
+  }
+
+  .tag {
+    font-family: var(--font-me);
+    font-size: 1.3rem;
+    font-weight: 600;
+    max-width: 32ch;
+    margin: 1.5rem 0 0.25rem;
+  }
+  .loc { opacity: 0.6; font-size: 0.9rem; margin: 0; }
+
+  nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.6rem; justify-items: end; }
+  nav li {
+    transform: rotate(calc(-4deg + var(--i) * 2deg)) translateX(calc(var(--i) * -12px));
+    animation: slideIn 0.5s backwards;
+    animation-delay: calc(0.2s + var(--i) * 0.08s);
+  }
+  nav a {
+    display: inline-block;
+    font-family: var(--font-p);
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--p-white);
+    background: var(--p-black);
+    padding: 0.1rem 1rem;
+    clip-path: polygon(4% 0, 100% 6%, 96% 100%, 0 92%);
+    transition: transform 0.15s, background 0.15s, color 0.15s;
+  }
+  nav a:hover, nav a:focus-visible {
+    background: var(--p-white);
+    color: var(--p-red);
+    transform: scale(1.12) rotate(-3deg);
+    outline: none;
+  }
+
+  @keyframes rotate { to { transform: rotate(360deg); } }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(120px); } }
+
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: 1fr; }
+    nav ul { justify-items: start; }
+    nav li { transform: rotate(-2deg); }
+    .slash { width: 100%; opacity: 0.85; }
+  }
+</style>

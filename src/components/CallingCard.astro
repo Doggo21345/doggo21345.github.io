@@ -1,0 +1,80 @@
+---
+import { profile } from '../data/profile';
+
+const { email, ...rest } = profile.links;
+const labels: Record<string, string> = {
+  linkedin: 'LinkedIn',
+  github: 'GitHub',
+  youtube: 'YouTube',
+  tiktok: 'TikTok',
+  newsletter: 'The Beehive',
+  resume: 'Resume',
+};
+const links = Object.entries(rest)
+  .filter(([, url]) => url)
+  .map(([key, url]) => ({ label: labels[key] ?? key, url }));
+---
+
+<section id="contact">
+  <div class="wrap">
+    <h2 class="p-heading">Calling Card</h2>
+
+    <div class="card reveal">
+      <p class="to">To the recruiter reading this,</p>
+      <p class="body">
+        You are looking for someone who can turn messy product data into decisions.
+        I've decided to make you an offer: <strong>let's talk.</strong>
+      </p>
+      <p class="sign">From, <span>{profile.name}</span></p>
+
+      <div class="links">
+        {email && <a href={`mailto:${email}`} class="primary">Send a message</a>}
+        {links.map((l) => <a href={l.url} target="_blank" rel="noopener">{l.label}</a>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Built with Astro by {profile.name}. Inspired by Mass Effect and Persona 5. Not affiliated with BioWare or Atlus.</p>
+</footer>
+
+<style>
+  .card {
+    position: relative;
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--p-red);
+    padding: 3rem 2.5rem;
+    transform: rotate(-2deg);
+    clip-path: polygon(2% 0, 100% 3%, 97% 100%, 0 96%);
+  }
+  .card::before {
+    /* black inner frame */
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 4px solid var(--p-black);
+    pointer-events: none;
+  }
+  .to, .sign { font-family: var(--font-p); font-size: 1.4rem; text-transform: uppercase; margin: 0; }
+  .body { font-family: var(--font-p); font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.15; text-transform: uppercase; margin: 1rem 0; }
+  .body strong { background: var(--p-black); padding: 0 0.3rem; font-weight: 400; }
+  .sign { text-align: right; }
+  .sign span { background: var(--p-white); color: var(--p-black); padding: 0 0.4rem; display: inline-block; transform: rotate(3deg); }
+
+  .links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  .links a {
+    font-family: var(--font-p);
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--p-black);
+    color: var(--p-white);
+    padding: 0.35rem 1rem;
+    transform: skewX(-10deg);
+    transition: background 0.15s, color 0.15s;
+  }
+  .links a.primary, .links a:hover { background: var(--p-white); color: var(--p-red); }
+
+  footer { text-align: center; padding: 3rem 1.5rem; font-size: 0.8rem; opacity: 0.5; }
+</style>

@@ -1,0 +1,121 @@
+/* Two visual languages:
+   - Persona 5: red / black / white, slanted shapes, heavy type
+   - Mass Effect: dark space, glowing holo panels, thin sci-fi type */
+
+:root {
+  --p-red: #e60012;
+  --p-black: #0b0b0b;
+  --p-white: #f7f7f2;
+  --space: #05070d;
+  --holo: #4fc3ff;
+  --holo-dim: rgba(79, 195, 255, 0.15);
+  --holo-glow: rgba(79, 195, 255, 0.45);
+  --font-p: 'Anton', Impact, sans-serif;
+  --font-me: 'Rajdhani', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--space);
+  color: var(--p-white);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+::selection { background: var(--p-red); color: var(--p-white); }
+
+/* Starfield behind everything */
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(1px 1px at 10% 20%, #fff8, transparent),
+    radial-gradient(1px 1px at 30% 80%, #fff6, transparent),
+    radial-gradient(1.5px 1.5px at 50% 40%, #fffa, transparent),
+    radial-gradient(1px 1px at 70% 10%, #fff7, transparent),
+    radial-gradient(1px 1px at 85% 60%, #fff5, transparent),
+    radial-gradient(1.5px 1.5px at 92% 90%, #fff9, transparent),
+    radial-gradient(1px 1px at 20% 50%, #fff4, transparent),
+    radial-gradient(ellipse at 80% 0%, #1a0a2a 0%, transparent 60%),
+    radial-gradient(ellipse at 0% 100%, #0a1a2a 0%, transparent 60%),
+    var(--space);
+  background-size: 400px 400px, 300px 300px, 500px 500px, 350px 350px, 450px 450px, 600px 600px, 250px 250px, 100% 100%, 100% 100%, 100% 100%;
+}
+
+section { position: relative; padding: 7rem 1.5rem; }
+
+.wrap { max-width: 1100px; margin: 0 auto; }
+
+/* Persona-style section heading: slanted white plate on red shadow */
+.p-heading {
+  display: inline-block;
+  font-family: var(--font-p);
+  font-size: clamp(2.4rem, 6vw, 4.5rem);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--p-black);
+  background: var(--p-white);
+  padding: 0.3rem 1.2rem 0.4rem;
+  transform: rotate(-3deg) skewX(-8deg);
+  box-shadow: 10px 10px 0 var(--p-red);
+  margin: 0 0 3rem;
+}
+
+/* Mass Effect-style label: thin caps with a glowing bar */
+.me-label {
+  font-family: var(--font-me);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 0.8rem;
+  color: var(--holo);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.me-label::before {
+  content: '';
+  width: 2rem;
+  height: 2px;
+  background: var(--holo);
+  box-shadow: 0 0 8px var(--holo-glow);
+}
+
+/* Holo panel used by codex and galaxy map */
+.holo {
+  position: relative;
+  background: linear-gradient(180deg, var(--holo-dim), rgba(0, 0, 0, 0.6));
+  border: 1px solid var(--holo);
+  box-shadow: 0 0 24px var(--holo-dim), inset 0 0 40px var(--holo-dim);
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  font-family: var(--font-me);
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.holo::after {
+  /* scanlines */
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, transparent 0 2px, rgba(255, 255, 255, 0.03) 2px 3px);
+}
+
+/* Reveal on scroll */
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .reveal { opacity: 1; transform: none; }
+  html { scroll-behavior: auto; }
+}

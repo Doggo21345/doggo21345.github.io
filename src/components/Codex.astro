@@ -1,0 +1,43 @@
+---
+import { codex, profile } from '../data/profile';
+---
+
+<section id="codex">
+  <div class="wrap">
+    <h2 class="p-heading">Codex</h2>
+
+    <div class="layout reveal">
+      <aside class="holo stats">
+        <p class="me-label">Personnel file</p>
+        <h3>{profile.name}</h3>
+        <dl>
+          {codex.stats.map((s) => (
+            <div>
+              <dt>{s.label}</dt>
+              <dd>{s.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </aside>
+
+      <div class="holo entry">
+        <p class="me-label">Primary entry</p>
+        {codex.primary.map((p) => <p>{p}</p>)}
+        <p class="me-label sub">Secondary entry</p>
+        {codex.secondary.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; }
+  .holo { padding: 2rem; }
+  h3 { font-family: var(--font-me); font-size: 1.8rem; letter-spacing: 0.08em; margin: 0.75rem 0 1.5rem; }
+  dl { margin: 0; display: grid; gap: 1rem; }
+  dt { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.6; }
+  dd { margin: 0; font-size: 1.15rem; font-weight: 600; color: var(--holo); }
+  .entry p:not(.me-label) { font-family: var(--font-body); font-size: 1.05rem; max-width: 65ch; }
+  .sub { margin-top: 2rem; }
+  @media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+</style>

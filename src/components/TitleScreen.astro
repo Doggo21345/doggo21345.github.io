@@ -1,0 +1,92 @@
+---
+import { profile } from '../data/profile';
+---
+
+<div id="title-screen" role="dialog" aria-label="Title screen">
+  <div class="ring" aria-hidden="true"></div>
+  <p class="boot">SYSTEMS ONLINE · LOADING PROFILE</p>
+  <h1>{profile.name.toUpperCase()}</h1>
+  <button id="start">PRESS ANY KEY</button>
+</div>
+
+<script>
+  const screen = document.getElementById('title-screen')!;
+  if (sessionStorage.getItem('started')) {
+    screen.remove();
+  } else {
+    document.body.style.overflow = 'hidden';
+    const start = () => {
+      sessionStorage.setItem('started', '1');
+      screen.classList.add('out');
+      document.body.style.overflow = '';
+      setTimeout(() => screen.remove(), 700);
+      window.removeEventListener('keydown', start);
+    };
+    window.addEventListener('keydown', start);
+    screen.addEventListener('click', start);
+  }
+</script>
+
+<style>
+  #title-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.5rem;
+    background: radial-gradient(circle at center, #0d1626 0%, #000 70%);
+    cursor: pointer;
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  #title-screen.out { opacity: 0; transform: scale(1.08); pointer-events: none; }
+
+  .ring {
+    position: absolute;
+    width: min(70vw, 520px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 1px solid var(--holo);
+    box-shadow: 0 0 40px var(--holo-dim), inset 0 0 40px var(--holo-dim);
+    animation: spin 20s linear infinite;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .boot {
+    font-family: var(--font-me);
+    letter-spacing: 0.4em;
+    font-size: 0.75rem;
+    color: var(--holo);
+    margin: 0;
+    animation: flicker 2s infinite;
+  }
+
+  h1 {
+    font-family: var(--font-me);
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    font-size: clamp(2rem, 7vw, 4.5rem);
+    margin: 0;
+    padding-left: 0.35em;
+    text-shadow: 0 0 20px var(--holo-glow);
+  }
+
+  button {
+    font-family: var(--font-p);
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    background: var(--p-red);
+    color: var(--p-white);
+    border: 0;
+    padding: 0.5rem 1.6rem;
+    transform: skewX(-12deg) rotate(-2deg);
+    cursor: pointer;
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes pulse { 50% { opacity: 0.4; } }
+  @keyframes flicker { 0%, 100% { opacity: 1; } 92% { opacity: 1; } 94% { opacity: 0.3; } 96% { opacity: 1; } }
+</style>

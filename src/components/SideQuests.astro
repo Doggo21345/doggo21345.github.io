@@ -1,0 +1,89 @@
+---
+import { sideQuests } from '../data/profile';
+---
+
+<section id="side-quests">
+  <div class="wrap">
+    <h2 class="p-heading">Side Quests</h2>
+    <p class="me-label">Projects I've built, at work and on my own</p>
+
+    <div class="grid">
+      {sideQuests.map((q) => (
+        <article class="holo quest reveal">
+          {q.status && <span class="stamp">{q.status}</span>}
+          <p class="type">{q.type}</p>
+          <h3>{q.name}</h3>
+          <p class="brief">{q.brief || 'Briefing incoming.'}</p>
+          {q.details.length > 0 && (
+            <ul class="details">
+              {q.details.map((d) => <li>{d}</li>)}
+            </ul>
+          )}
+          {q.tools.length > 0 && (
+            <ul class="tools">
+              {q.tools.map((t) => <li>{t}</li>)}
+            </ul>
+          )}
+          {q.link && (
+            <a class="go" href={q.link} target="_blank" rel="noopener">View project</a>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .quest { padding: 2rem 1.75rem; display: flex; flex-direction: column; }
+
+  .stamp {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.6rem;
+    font-family: var(--font-p);
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    background: var(--p-red);
+    color: var(--p-white);
+    padding: 0.05rem 0.6rem;
+    transform: rotate(4deg) skewX(-10deg);
+  }
+  .type {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--holo);
+  }
+  h3 { font-size: 1.8rem; letter-spacing: 0.04em; margin: 0.3rem 0 0.8rem; line-height: 1.1; }
+  .brief { font-family: var(--font-body); margin: 0 0 1rem; }
+
+  .details { font-family: var(--font-body); font-size: 0.92rem; margin: 0 0 1.25rem; padding: 0; list-style: none; display: grid; gap: 0.5rem; opacity: 0.9; }
+  .details li { padding-left: 1.2rem; position: relative; }
+  .details li::before { content: '▸'; position: absolute; left: 0; color: var(--holo); }
+
+  .tools { list-style: none; padding: 0; margin: auto 0 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .tools li { border: 1px solid var(--holo); padding: 0.1rem 0.55rem; font-size: 0.8rem; letter-spacing: 0.08em; }
+
+  .go {
+    align-self: flex-start;
+    margin-top: 1.25rem;
+    font-family: var(--font-p);
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--p-white);
+    color: var(--p-black);
+    padding: 0.3rem 1rem;
+    transform: skewX(-10deg);
+    position: relative;
+    z-index: 1;
+    transition: background 0.15s, color 0.15s;
+  }
+  .go:hover { background: var(--p-red); color: var(--p-white); }
+</style>

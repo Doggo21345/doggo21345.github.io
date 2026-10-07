@@ -1,0 +1,85 @@
+---
+import { socialStats } from '../data/profile';
+
+// Five points of a pentagon, used to draw the stat radar like the Persona 5 status screen
+const center = 100;
+const radius = 80;
+const point = (i: number, r: number) => {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / socialStats.length;
+  return [center + r * Math.cos(a), center + r * Math.sin(a)];
+};
+const outline = socialStats.map((_, i) => point(i, radius).join(',')).join(' ');
+const filled = socialStats.map((s, i) => point(i, (radius * s.rank) / 5).join(',')).join(' ');
+---
+
+<section id="stats" class="stats-section">
+  <div class="wrap">
+    <h2 class="p-heading">Social Stats</h2>
+
+    <div class="layout reveal">
+      <svg viewBox="0 0 200 200" class="radar" role="img" aria-label="Skills chart">
+        {[1, 2, 3, 4].map((step) => (
+          <polygon
+            points={socialStats.map((_, i) => point(i, (radius * step) / 5).join(',')).join(' ')}
+            class="ring"
+          />
+        ))}
+        <polygon points={outline} class="outline" />
+        <polygon points={filled} class="fill" />
+        {socialStats.map((s, i) => {
+          const [x, y] = point(i, radius + 20);
+          return <text x={x} y={y} text-anchor="middle" dominant-baseline="middle">{s.stat.toUpperCase()}</text>;
+        })}
+      </svg>
+
+      <ul class="list">
+        {socialStats.map((s, i) => (
+          <li style={`--i:${i}`}>
+            <div class="top">
+              <span class="stat">{s.stat}</span>
+              <span class="title">{s.title}</span>
+            </div>
+            <div class="pips" aria-label={`Rank ${s.rank} of 5`}>
+              {[1, 2, 3, 4, 5].map((n) => <span class={n <= s.rank ? 'on' : ''}></span>)}
+            </div>
+            <p>{s.note}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    background: var(--p-red);
+    clip-path: polygon(0 4%, 100% 0, 100% 96%, 0 100%);
+    padding: 9rem 1.5rem;
+  }
+  .stats-section .p-heading { box-shadow: 10px 10px 0 var(--p-black); }
+
+  .layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: center; }
+
+  .radar { width: 100%; max-width: 420px; overflow: visible; }
+  .ring { fill: none; stroke: var(--p-black); stroke-width: 0.6; opacity: 0.4; }
+  .outline { fill: var(--p-black); stroke: var(--p-white); stroke-width: 2; }
+  .fill { fill: var(--p-white); opacity: 0.92; }
+  .radar text { font-family: var(--font-p); font-size: 8px; fill: var(--p-white); }
+
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .list li {
+    background: var(--p-black);
+    padding: 0.9rem 1.2rem;
+    transform: rotate(calc(-1.5deg + var(--i) * 0.7deg));
+    clip-path: polygon(0 0, 100% 4%, 99% 100%, 1% 94%);
+  }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .stat { font-family: var(--font-p); font-size: 1.6rem; text-transform: uppercase; }
+  .title { font-family: var(--font-p); color: var(--p-red); font-size: 1.1rem; text-transform: uppercase; }
+  .pips { display: flex; gap: 0.3rem; margin: 0.3rem 0; }
+  .pips span { width: 22px; height: 8px; background: #333; transform: skewX(-20deg); }
+  .pips span.on { background: var(--p-white); }
+  .list p { margin: 0.2rem 0 0; font-size: 0.95rem; opacity: 0.85; }
+
+  @media (max-width: 800px) { .layout { grid-template-columns: 1fr; justify-items: center; } }
+</style>

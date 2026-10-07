@@ -1,0 +1,76 @@
+---
+import { confidants } from '../data/profile';
+---
+
+<section id="confidants">
+  <div class="wrap">
+    <h2 class="p-heading">Confidants</h2>
+    <p class="me-label">What I do when I'm not writing SQL</p>
+
+    <div class="grid">
+      {confidants.map((c, i) => (
+        <article class="card reveal" style={`--i:${i}`}>
+          <div class="arcana">
+            <span class="num">{c.arcana}</span>
+            <span class="arcana-name">{c.name}</span>
+          </div>
+          <h3>{c.what}</h3>
+          <p>{c.line}</p>
+          <div class="rank">
+            <span>RANK</span>
+            <strong>{c.rank === 10 ? 'MAX' : c.rank}</strong>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  .card {
+    position: relative;
+    background: var(--p-white);
+    color: var(--p-black);
+    padding: 1.5rem 1.5rem 3.5rem;
+    clip-path: polygon(0 3%, 100% 0, 97% 100%, 3% 97%);
+    transition: transform 0.2s;
+  }
+  .card:nth-child(odd) { transform: rotate(-2deg); }
+  .card:nth-child(even) { transform: rotate(2deg); }
+  .card.reveal:not(.in) { transform: translateY(30px); }
+  .card:hover { transform: rotate(0) scale(1.04); }
+
+  .arcana { display: flex; align-items: center; gap: 0.6rem; }
+  .num {
+    font-family: var(--font-p);
+    background: var(--p-red);
+    color: var(--p-white);
+    min-width: 2.6rem;
+    text-align: center;
+    padding: 0.1rem 0.4rem;
+    transform: skewX(-10deg);
+    font-size: 1.2rem;
+  }
+  .arcana-name { font-family: var(--font-me); font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; font-size: 0.8rem; }
+
+  h3 { font-family: var(--font-p); font-size: 2.2rem; text-transform: uppercase; margin: 0.8rem 0 0.3rem; line-height: 1; }
+  p { margin: 0; }
+
+  .rank {
+    position: absolute;
+    right: 1.2rem;
+    bottom: 0.8rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-family: var(--font-p);
+  }
+  .rank span { font-size: 0.8rem; opacity: 0.6; }
+  .rank strong { font-size: 2rem; color: var(--p-red); font-weight: 400; }
+</style>

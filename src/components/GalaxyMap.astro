@@ -1,0 +1,141 @@
+---
+import { missions } from '../data/profile';
+---
+
+<section id="missions">
+  <div class="wrap">
+    <h2 class="p-heading">Galaxy Map</h2>
+    <p class="me-label">Select a system to view the mission log</p>
+
+    <div class="layout reveal">
+      <div class="map holo" role="tablist" aria-label="Internships">
+        <svg class="orbits" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+          <ellipse cx="50" cy="50" rx="45" ry="38" />
+          <ellipse cx="50" cy="50" rx="30" ry="25" />
+          <ellipse cx="50" cy="50" rx="15" ry="12" />
+        </svg>
+        {missions.map((m, i) => (
+          <button
+            class={`node ${m.status === 'ACTIVE' ? 'active-mission' : ''}`}
+            style={`left:${m.x}%;top:${m.y}%`}
+            role="tab"
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={`m-${m.id}`}
+            data-id={m.id}
+          >
+            <span class="dot"></span>
+            <span class="label">{m.system}</span>
+          </button>
+        ))}
+      </div>
+
+      <div class="logs">
+        {missions.map((m, i) => (
+          <article id={`m-${m.id}`} class="holo log" role="tabpanel" hidden={i !== 0}>
+            <p class="me-label">Mission log · <span class={m.status === 'ACTIVE' ? 'live' : ''}>{m.status}</span></p>
+            <h3>{m.system}</h3>
+            <p class="role">{m.role}</p>
+            {(m.team || m.when || m.where) && (
+              <p class="meta">{[m.team, m.when, m.where].filter(Boolean).join('  ·  ')}</p>
+            )}
+            <p class="brief">{m.brief || 'Mission details classified. Ask me about it.'}</p>
+            {m.details.length > 0 && (
+              <ul class="details">
+                {m.details.map((d) => <li>{d}</li>)}
+              </ul>
+            )}
+            {m.tools.length > 0 && (
+              <ul class="tools">
+                {m.tools.map((t) => <li>{t}</li>)}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const nodes = document.querySelectorAll<HTMLButtonElement>('#missions .node');
+  nodes.forEach((node) =>
+    node.addEventListener('click', () => {
+      nodes.forEach((n) => n.setAttribute('aria-selected', String(n === node)));
+      document.querySelectorAll<HTMLElement>('#missions .log').forEach((log) => {
+        log.hidden = log.id !== `m-${node.dataset.id}`;
+      });
+    })
+  );
+</script>
+
+<style>
+  .layout { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+
+  .map { position: relative; aspect-ratio: 4 / 3; overflow: hidden; }
+  .orbits { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .orbits ellipse { fill: none; stroke: var(--holo); stroke-width: 0.15; opacity: 0.35; stroke-dasharray: 1 1; }
+
+  .node {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: 0;
+    color: var(--p-white);
+    cursor: pointer;
+    display: grid;
+    justify-items: center;
+    gap: 0.4rem;
+    z-index: 1;
+    font-family: var(--font-me);
+  }
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--holo);
+    box-shadow: 0 0 12px var(--holo-glow);
+    transition: transform 0.2s;
+  }
+  .active-mission .dot { animation: ping 1.8s infinite; }
+  .label {
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    padding: 0.1rem 0.5rem;
+  }
+  .node:hover .dot, .node:focus-visible .dot { transform: scale(1.4); }
+  .node[aria-selected='true'] .dot { background: var(--p-white); transform: scale(1.5); }
+  .node[aria-selected='true'] .label {
+    background: var(--p-red);
+    transform: skewX(-10deg);
+    font-family: var(--font-p);
+    letter-spacing: 0.05em;
+    font-size: 1rem;
+  }
+
+  .log { padding: 2rem; min-height: 100%; }
+  h3 { font-family: var(--font-me); font-size: 2.2rem; letter-spacing: 0.06em; margin: 0.5rem 0 0; }
+  .role { font-weight: 700; font-size: 1.15rem; margin: 0.2rem 0; color: var(--holo); }
+  .meta { opacity: 0.65; font-size: 0.9rem; margin: 0; }
+  .brief { font-family: var(--font-body); font-size: 1.05rem; margin: 1.25rem 0; }
+  .live { color: #4cff7a; }
+  .details { font-family: var(--font-body); font-size: 0.95rem; margin: 0 0 1.25rem; padding: 0; list-style: none; display: grid; gap: 0.6rem; }
+  .details li { padding-left: 1.2rem; position: relative; }
+  .details li::before { content: '▸'; position: absolute; left: 0; color: var(--holo); }
+  .tools { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tools li {
+    border: 1px solid var(--holo);
+    padding: 0.15rem 0.6rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 var(--holo-glow); } 100% { box-shadow: 0 0 0 16px transparent; } }
+
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: 1fr; }
+    .label { font-size: 0.7rem; }
+  }
+</style>
