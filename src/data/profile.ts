@@ -6,9 +6,9 @@ export const profile = {
   tagline: 'Growth & GTM data science. Behavioral analytics. Black belt.',
   location: 'Austin, TX  ·  Bellevue, WA (Fall 2026)',
   links: {
-    email: '',
-    linkedin: '',
-    github: 'https://github.com/azpanda-glitch',
+    email: 'a12pandaa@gmail.com',
+    linkedin: 'https://www.linkedin.com/in/aryapanda',
+    github: 'https://github.com/Doggo21345',
     youtube: '',
     tiktok: '',
     newsletter: '',
@@ -38,6 +38,7 @@ export const codex = {
 export const missions = [
   {
     id: 'amazon',
+    logo: '/images/logos/amazon.svg',
     system: 'Amazon Alexa',
     role: 'Product Data Engineering Intern',
     when: 'Fall 2026',
@@ -58,6 +59,7 @@ export const missions = [
   },
   {
     id: 'xbox',
+    logo: '/images/logos/xbox.svg',
     system: 'Microsoft Xbox',
     role: 'Growth Marketing Data Science Intern',
     when: 'Summer 2026',
@@ -79,6 +81,7 @@ export const missions = [
   },
   {
     id: 'tiktok',
+    logo: '/images/logos/tiktok.svg',
     system: 'TikTok',
     role: 'BizOps Data Engineer',
     when: 'Spring 2026',
@@ -101,6 +104,7 @@ export const missions = [
   },
   {
     id: 'snowflake',
+    logo: '/images/logos/snowflake.svg',
     system: 'Snowflake',
     role: 'ABM Marketing Operations Intern',
     when: 'Fall 2025',
@@ -120,6 +124,7 @@ export const missions = [
   },
   {
     id: 'cloudflare',
+    logo: '/images/logos/cloudflare.svg',
     system: 'Cloudflare',
     role: 'Marketing Analyst Intern',
     when: 'Summer 2025',
@@ -141,6 +146,7 @@ export const missions = [
   },
   {
     id: 'pepsico',
+    logo: '',
     system: 'PepsiCo',
     role: 'Intern',
     when: '',
@@ -158,6 +164,7 @@ export const missions = [
   },
   {
     id: 'apmedia',
+    logo: '',
     system: 'AP Media and Tech Pulse',
     role: 'Founder and CEO',
     when: '2020 – 2025',
@@ -273,7 +280,7 @@ export const confidants = [
 ];
 
 // Player profile: why media & gaming, plus all-time favorite games.
-// A game with an empty name shows as a locked slot.
+// Game art: official Steam library covers, used as fan art.
 export const playerProfile = {
   pitch: [
     'I think the media and gaming industries are really cool, and that is where I want to build my career.',
@@ -281,22 +288,25 @@ export const playerProfile = {
   ],
   games: [
     {
+      name: 'Cyberpunk 2077',
+      studio: 'CD Projekt Red',
+      style: 'cp',
+      image: '/images/games/cyberpunk-2077.jpg',
+      line: 'An open world in Night City where you build your own legend. My all-time number one.',
+    },
+    {
       name: 'Mass Effect',
       studio: 'BioWare',
       style: 'me',
+      image: '/images/games/mass-effect.jpg',
       line: 'A sci-fi trilogy where every choice you make carries forward, all the way to the end.',
     },
     {
       name: 'Persona 5',
       studio: 'Atlus',
       style: 'p5',
+      image: '/images/games/persona-5.jpg',
       line: 'Students by day, Phantom Thieves by night. The style of this whole site comes from here.',
-    },
-    {
-      name: '',
-      studio: '',
-      style: 'locked',
-      line: '',
     },
   ],
 };

@@ -15,6 +15,7 @@ import { playerProfile } from '../data/profile';
     <div class="games">
       {playerProfile.games.map((g, i) => (
         <article class={`game ${g.style} reveal`} style={`--i:${i}`}>
+          {g.image && <img class="cover" src={g.image} alt={`${g.name} cover art`} loading="lazy" />}
           <span class="slot">{String(i + 1).padStart(2, '0')}</span>
           {g.name ? (
             <>
@@ -50,7 +51,7 @@ import { playerProfile } from '../data/profile';
 
   .game {
     position: relative;
-    min-height: 300px;
+    min-height: 460px;
     padding: 2rem 1.75rem;
     display: flex;
     flex-direction: column;
@@ -59,6 +60,27 @@ import { playerProfile } from '../data/profile';
     transition: transform 0.2s;
   }
   .game:hover { transform: translateY(-6px); }
+  .game > :not(.cover) { position: relative; z-index: 1; }
+  .game > .slot { position: absolute; }
+  .cover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+    z-index: 0;
+    transition: transform 0.4s;
+  }
+  .game:hover .cover { transform: scale(1.05); }
+  .game::after {
+    /* darken the bottom so text stays readable over the art */
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, transparent 25%, rgba(0, 0, 0, 0.88) 72%);
+  }
   .slot {
     position: absolute;
     top: 1rem;
@@ -89,12 +111,14 @@ import { playerProfile } from '../data/profile';
     right: 1.25rem;
     width: 12px;
     height: 100%;
+    z-index: 1;
     background: linear-gradient(#ff5a1f, #ff5a1f 33%, #fff 33%, #fff 40%, #ff5a1f 40%);
     opacity: 0.85;
   }
   .me h3 { font-family: var(--font-me); font-weight: 700; font-size: 2.4rem; letter-spacing: 0.12em; text-transform: uppercase; text-shadow: 0 0 16px rgba(79, 195, 255, 0.6); }
   .me .studio { color: #4fc3ff; font-family: var(--font-me); }
   .me .why { font-family: var(--font-body); }
+  .me .slot { color: #4fc3ff; opacity: 0.9; }
 
   /* Persona 5 card: red, black slashes, tilted */
   .p5 {
@@ -115,7 +139,22 @@ import { playerProfile } from '../data/profile';
     transform: skewX(-10deg);
   }
   .p5 .studio { font-family: var(--font-p); letter-spacing: 0.1em; }
-  .p5 .slot { color: var(--p-black); opacity: 0.5; }
+  .p5 .slot { color: var(--p-white); opacity: 0.9; text-shadow: 3px 3px 0 var(--p-red); }
+  .p5 { border: 4px solid var(--p-red); }
+  .p5::after { background: linear-gradient(180deg, transparent 30%, rgba(230, 0, 18, 0.92) 75%); }
+
+  /* Cyberpunk card: yellow frame, cyan glitch title */
+  .cp { border: 3px solid #fcee0a; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%); }
+  .cp h3 {
+    font-family: var(--font-me);
+    font-weight: 700;
+    font-size: 2.3rem;
+    text-transform: uppercase;
+    color: #fcee0a;
+    text-shadow: 3px 0 0 #00f0ff, -3px 0 0 #ff003c;
+  }
+  .cp .studio { color: #00f0ff; font-family: var(--font-me); }
+  .cp .slot { color: #fcee0a; opacity: 0.9; text-shadow: 2px 2px 0 #000; }
 
   /* Locked slot */
   .locked {
