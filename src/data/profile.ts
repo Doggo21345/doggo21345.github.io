@@ -252,13 +252,14 @@ export const sideQuests = [
   },
 ];
 
-// Persona 5 style social stats. Rank is 1-5.
-export const socialStats = [
-  { stat: 'Knowledge', rank: 5, title: 'Erudite', note: 'SQL, Python, ML models, A/B testing, LLM agents' },
-  { stat: 'Proficiency', rank: 4, title: 'Skilled', note: 'Airflow, dbt, Spark, Databricks, BigQuery, Redshift, Tableau' },
-  { stat: 'Guts', rank: 5, title: 'Lionhearted', note: 'Built and sold a company in high school' },
-  { stat: 'Charm', rank: 4, title: 'Charismatic', note: '4 years of marketing, makes videos for fun' },
-  { stat: 'Kindness', rank: 4, title: 'Selfless', note: 'Runs a free internship newsletter for students' },
+// Skill tree. rank is 1-5; short is the label on the chart.
+export const skills = [
+  { stat: 'SQL & Data Modeling', short: 'SQL', rank: 5, title: 'Expert', note: 'Redshift, BigQuery, Databricks, Snowflake. Turning vague questions into clear metric definitions.' },
+  { stat: 'Python & Machine Learning', short: 'ML', rank: 5, title: 'Expert', note: 'Churn prediction at Amazon, account scoring at Snowflake, campaign prediction at Cloudflare.' },
+  { stat: 'Data Engineering', short: 'PIPELINES', rank: 4, title: 'Advanced', note: 'Airflow, dbt, and Spark pipelines at TikTok. Moved 3 years of data from Cosmos DB to Databricks at Xbox.' },
+  { stat: 'Experimentation', short: 'A/B TESTS', rank: 4, title: 'Advanced', note: 'Onboarding A/B test across 200+ sellers at TikTok, 15+ tests for agency clients, a 17% CTR lift at Xbox.' },
+  { stat: 'BI & Dashboards', short: 'BI', rank: 4, title: 'Advanced', note: 'Tableau and self-serve reporting used by 300+ analysts and salespeople at TikTok.' },
+  { stat: 'AI & LLM Agents', short: 'AI AGENTS', rank: 5, title: 'Expert', note: 'Text-to-SQL at Xbox, self-serve agents at Amazon, RAG agents at PepsiCo.' },
 ];
 
 // Persona 5 style confidants = hobbies

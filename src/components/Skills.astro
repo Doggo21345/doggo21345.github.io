@@ -1,39 +1,39 @@
 ---
-import { socialStats } from '../data/profile';
+import { skills } from '../data/profile';
 
-// Five points of a pentagon, used to draw the stat radar like the Persona 5 status screen
+// One point per skill, used to draw the radar like the Persona 5 status screen
 const center = 100;
 const radius = 80;
 const point = (i: number, r: number) => {
-  const a = -Math.PI / 2 + (i * 2 * Math.PI) / socialStats.length;
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / skills.length;
   return [center + r * Math.cos(a), center + r * Math.sin(a)];
 };
-const outline = socialStats.map((_, i) => point(i, radius).join(',')).join(' ');
-const filled = socialStats.map((s, i) => point(i, (radius * s.rank) / 5).join(',')).join(' ');
+const outline = skills.map((_, i) => point(i, radius).join(',')).join(' ');
+const filled = skills.map((s, i) => point(i, (radius * s.rank) / 5).join(',')).join(' ');
 ---
 
-<section id="stats" class="stats-section">
+<section id="skills" class="stats-section">
   <div class="wrap">
-    <h2 class="p-heading">Social Stats</h2>
+    <h2 class="p-heading">Skill Tree</h2>
 
     <div class="layout reveal">
       <svg viewBox="0 0 200 200" class="radar" role="img" aria-label="Skills chart">
         {[1, 2, 3, 4].map((step) => (
           <polygon
-            points={socialStats.map((_, i) => point(i, (radius * step) / 5).join(',')).join(' ')}
+            points={skills.map((_, i) => point(i, (radius * step) / 5).join(',')).join(' ')}
             class="ring"
           />
         ))}
         <polygon points={outline} class="outline" />
         <polygon points={filled} class="fill" />
-        {socialStats.map((s, i) => {
+        {skills.map((s, i) => {
           const [x, y] = point(i, radius + 20);
-          return <text x={x} y={y} text-anchor="middle" dominant-baseline="middle">{s.stat.toUpperCase()}</text>;
+          return <text x={x} y={y} text-anchor="middle" dominant-baseline="middle">{s.short}</text>;
         })}
       </svg>
 
       <ul class="list">
-        {socialStats.map((s, i) => (
+        {skills.map((s, i) => (
           <li style={`--i:${i}`}>
             <div class="top">
               <span class="stat">{s.stat}</span>
