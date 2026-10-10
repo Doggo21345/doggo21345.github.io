@@ -254,12 +254,12 @@ export const sideQuests = [
 
 // Skill tree. rank is 1-5; short is the label on the chart.
 export const skills = [
-  { stat: 'SQL & Data Modeling', short: 'SQL', rank: 5, title: 'Expert', note: 'Redshift, BigQuery, Databricks, Snowflake. Turning vague questions into clear metric definitions.' },
-  { stat: 'Python & Machine Learning', short: 'ML', rank: 5, title: 'Expert', note: 'Churn prediction at Amazon, account scoring at Snowflake, campaign prediction at Cloudflare.' },
-  { stat: 'Data Engineering', short: 'PIPELINES', rank: 4, title: 'Advanced', note: 'Airflow, dbt, and Spark pipelines at TikTok. Moved 3 years of data from Cosmos DB to Databricks at Xbox.' },
-  { stat: 'Experimentation', short: 'A/B TESTS', rank: 4, title: 'Advanced', note: 'Onboarding A/B test across 200+ sellers at TikTok, 15+ tests for agency clients, a 17% CTR lift at Xbox.' },
-  { stat: 'BI & Dashboards', short: 'BI', rank: 4, title: 'Advanced', note: 'Tableau and self-serve reporting used by 300+ analysts and salespeople at TikTok.' },
-  { stat: 'AI & LLM Agents', short: 'AI AGENTS', rank: 5, title: 'Expert', note: 'Text-to-SQL at Xbox, self-serve agents at Amazon, RAG agents at PepsiCo.' },
+  { stat: 'SQL & Data Modeling', short: 'SQL', rank: 5, title: 'Proficient', note: 'Redshift, BigQuery, Databricks, Snowflake. Turning vague questions into clear metric definitions.' },
+  { stat: 'Python & Machine Learning', short: 'ML', rank: 5, title: 'Proficient', note: 'Churn prediction at Amazon, account scoring at Snowflake, campaign prediction at Cloudflare.' },
+  { stat: 'Data Engineering', short: 'PIPELINES', rank: 4, title: 'Proficient', note: 'Airflow, dbt, and Spark pipelines at TikTok. Moved 3 years of data from Cosmos DB to Databricks at Xbox.' },
+  { stat: 'Experimentation', short: 'A/B TESTS', rank: 4, title: 'Proficient', note: 'Onboarding A/B test across 200+ sellers at TikTok, 15+ tests for agency clients, a 17% CTR lift at Xbox.' },
+  { stat: 'BI & Dashboards', short: 'BI', rank: 4, title: 'Proficient', note: 'Tableau and self-serve reporting used by 300+ analysts and salespeople at TikTok.' },
+  { stat: 'AI & LLM Agents', short: 'AI AGENTS', rank: 5, title: 'Proficient', note: 'Text-to-SQL at Xbox, self-serve agents at Amazon, RAG agents at PepsiCo.' },
 ];
 
 // Persona 5 style confidants = hobbies
@@ -271,3 +271,32 @@ export const confidants = [
   { arcana: 'XVII', name: 'The Star', what: 'Content', line: 'Documenting the internship journey so others can skip the guesswork.', rank: 6 },
   { arcana: 'XIX', name: 'The Sun', what: 'The Beehive', line: 'A newsletter of early-career internship openings.', rank: 6 },
 ];
+
+// Player profile: why media & gaming, plus all-time favorite games.
+// A game with an empty name shows as a locked slot.
+export const playerProfile = {
+  pitch: [
+    'I think the media and gaming industries are really cool, and that is where I want to build my career.',
+    'The work I have enjoyed most sits right there: how players behave at Xbox, how creators and sellers grow on TikTok, and what makes people watch my own videos. I want to do growth and behavioral data science for a game studio, a streaming service, or a media platform.',
+  ],
+  games: [
+    {
+      name: 'Mass Effect',
+      studio: 'BioWare',
+      style: 'me',
+      line: 'A sci-fi trilogy where every choice you make carries forward, all the way to the end.',
+    },
+    {
+      name: 'Persona 5',
+      studio: 'Atlus',
+      style: 'p5',
+      line: 'Students by day, Phantom Thieves by night. The style of this whole site comes from here.',
+    },
+    {
+      name: '',
+      studio: '',
+      style: 'locked',
+      line: '',
+    },
+  ],
+};
