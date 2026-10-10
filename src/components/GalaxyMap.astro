@@ -1,5 +1,6 @@
 ---
 import { missions } from '../data/profile';
+import Planet from './Planet.astro';
 ---
 
 <section id="missions">
@@ -23,7 +24,7 @@ import { missions } from '../data/profile';
             aria-controls={`m-${m.id}`}
             data-id={m.id}
           >
-            <span class="dot"></span>
+            <Planet id={`n-${m.id}`} color={m.color} rings={m.rings} size={44} class="dot" />
             <span class="label">{m.system}</span>
           </button>
         ))}
@@ -32,13 +33,20 @@ import { missions } from '../data/profile';
       <div class="logs">
         {missions.map((m, i) => (
           <article id={`m-${m.id}`} class="holo log" role="tabpanel" hidden={i !== 0}>
+            <Planet id={`l-${m.id}`} color={m.color} rings={m.rings} size={150} class="hero-planet" />
             <p class="me-label">Mission log · <span class={m.status === 'ACTIVE' ? 'live' : ''}>{m.status}</span></p>
             <h3>{m.system}</h3>
             <p class="role">{m.role}</p>
-            {(m.team || m.when || m.where) && (
-              <p class="meta">{[m.team, m.when, m.where].filter(Boolean).join('  ·  ')}</p>
+            {(m.when || m.where) && (
+              <p class="meta">{[m.when, m.where].filter(Boolean).join('  ·  ')}</p>
             )}
             <p class="brief">{m.brief || 'Mission details classified. Ask me about it.'}</p>
+            {m.story && (
+              <div class="story">
+                <p class="story-label">The story</p>
+                <p>{m.story}</p>
+              </div>
+            )}
             {m.details.length > 0 && (
               <ul class="details">
                 {m.details.map((d) => <li>{d}</li>)}
@@ -88,15 +96,8 @@ import { missions } from '../data/profile';
     z-index: 1;
     font-family: var(--font-me);
   }
-  .dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--holo);
-    box-shadow: 0 0 12px var(--holo-glow);
-    transition: transform 0.2s;
-  }
-  .active-mission .dot { animation: ping 1.8s infinite; }
+  .node :global(.dot) { transition: transform 0.2s; filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.6)); }
+  .active-mission :global(.dot) { animation: bob 2.4s ease-in-out infinite; }
   .label {
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -105,8 +106,8 @@ import { missions } from '../data/profile';
     white-space: nowrap;
     padding: 0.1rem 0.5rem;
   }
-  .node:hover .dot, .node:focus-visible .dot { transform: scale(1.4); }
-  .node[aria-selected='true'] .dot { background: var(--p-white); transform: scale(1.5); }
+  .node:hover :global(.dot), .node:focus-visible :global(.dot) { transform: scale(1.25); }
+  .node[aria-selected='true'] :global(.dot) { transform: scale(1.45); }
   .node[aria-selected='true'] .label {
     background: var(--p-red);
     transform: skewX(-10deg);
@@ -115,8 +116,12 @@ import { missions } from '../data/profile';
     font-size: 1rem;
   }
 
-  .log { padding: 2rem; min-height: 100%; }
-  h3 { font-family: var(--font-me); font-size: 2.2rem; letter-spacing: 0.06em; margin: 0.5rem 0 0; }
+  .log { padding: 2rem; min-height: 100%; position: relative; }
+  .log :global(.hero-planet) { position: absolute; top: -10px; right: -10px; opacity: 0.9; pointer-events: none; }
+  .story { border-left: 3px solid var(--p-red); padding: 0.2rem 0 0.2rem 1rem; margin: 0 0 1.25rem; font-family: var(--font-body); font-size: 0.95rem; }
+  .story p { margin: 0; }
+  .story .story-label { font-family: var(--font-p); text-transform: uppercase; color: var(--p-red); font-size: 1rem; margin-bottom: 0.3rem; }
+  h3 { position: relative; max-width: 75%; font-family: var(--font-me); font-size: 2.2rem; letter-spacing: 0.06em; margin: 0.5rem 0 0; }
   .role { font-weight: 700; font-size: 1.15rem; margin: 0.2rem 0; color: var(--holo); }
   .meta { opacity: 0.65; font-size: 0.9rem; margin: 0; }
   .brief { font-family: var(--font-body); font-size: 1.05rem; margin: 1.25rem 0; }
@@ -132,7 +137,7 @@ import { missions } from '../data/profile';
     letter-spacing: 0.08em;
   }
 
-  @keyframes ping { 0% { box-shadow: 0 0 0 0 var(--holo-glow); } 100% { box-shadow: 0 0 0 16px transparent; } }
+  @keyframes bob { 50% { translate: 0 -5px; } }
 
   @media (max-width: 800px) {
     .layout { grid-template-columns: 1fr; }

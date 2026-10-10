@@ -1,5 +1,9 @@
 ---
+import fs from 'node:fs';
 import { codex, profile } from '../data/profile';
+
+// Drop a photo at public/me.jpg and it replaces the silhouette.
+const hasPhoto = fs.existsSync('public/me.jpg');
 ---
 
 <section id="codex">
@@ -9,6 +13,17 @@ import { codex, profile } from '../data/profile';
     <div class="layout reveal">
       <aside class="holo stats">
         <p class="me-label">Personnel file</p>
+        <div class="portrait">
+          {hasPhoto ? (
+            <img src="/me.jpg" alt={profile.name} />
+          ) : (
+            <svg viewBox="0 0 100 120" aria-hidden="true">
+              <circle cx="50" cy="42" r="20" />
+              <path d="M12 120 Q14 76 50 72 Q86 76 88 120 Z" />
+            </svg>
+          )}
+          <span class="scan" aria-hidden="true"></span>
+        </div>
         <h3>{profile.name}</h3>
         <dl>
           {codex.stats.map((s) => (
@@ -33,6 +48,25 @@ import { codex, profile } from '../data/profile';
 <style>
   .layout { display: grid; grid-template-columns: 300px 1fr; gap: 1.5rem; }
   .holo { padding: 2rem; }
+  .portrait {
+    position: relative;
+    margin-top: 1rem;
+    aspect-ratio: 5 / 6;
+    border: 1px solid var(--holo);
+    background: radial-gradient(circle at 50% 35%, var(--holo-dim), transparent 70%);
+    overflow: hidden;
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.05); }
+  .portrait svg { width: 100%; height: 100%; fill: var(--holo); opacity: 0.35; }
+  .scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(180deg, transparent, var(--holo-dim), transparent);
+    animation: scan 3.5s linear infinite;
+  }
+  @keyframes scan { from { top: -30%; } to { top: 100%; } }
   h3 { font-family: var(--font-me); font-size: 1.8rem; letter-spacing: 0.08em; margin: 0.75rem 0 1.5rem; }
   dl { margin: 0; display: grid; gap: 1rem; }
   dt { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.6; }
